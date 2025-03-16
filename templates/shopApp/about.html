@@ -1,0 +1,51 @@
+{% extends 'shopApp/base.html' %}
+{% block content %}
+
+<style>
+
+    table {
+        border-collapse: collapse;
+        margin: 10px auto;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+    }
+
+    th {
+        color: white;
+    }
+
+    h1 {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+</style>
+
+<h1>Contactos</h1>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Nombre Completo</th>
+            <th>Dirección</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for contact in active_contacts %}
+        <tr>
+            <td>{{ contact.contact_full_name }}</td>
+            <td>{{ contact.contact_address }}</td>
+            <td>{{ contact.contact_phone }}</td>
+            <td>{{ contact.contact_email }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

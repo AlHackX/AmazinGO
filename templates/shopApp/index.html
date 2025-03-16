@@ -1,0 +1,78 @@
+{% extends 'shopApp/base.html' %}
+{% block content %}
+{% load static %}
+
+    <!-- Carrusel -->
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="https://placehold.co/1200x400" class="d-block w-100" alt="Noticia 1">
+            </div>
+            <div class="carousel-item">
+                <img src="https://placehold.co/1200x400" class="d-block w-100" alt="Noticia 2">
+            </div>
+            <div class="carousel-item">
+                <img src="https://placehold.co/1200x400" class="d-block w-100" alt="Noticia 3">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+
+    <!-- Tabla de ofertas -->
+    <div class="container my-4">
+        <h2 class="text-center">Ofertas Especiales</h2>
+        <table class="table table-striped table-bordered">
+            <thead class="">
+                <tr>
+                    <th>Imagen</th>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for offer in special_offers %}
+                <tr>
+                    <!-- <td style= "width: 120px"><img src="https://ae01.alicdn.com/kf/Se9fd6131e34b4e44a70d6ef32f9c1968n.jpg_640x640q90.jpg" width="100px" alt="Producto 1"></td> -->
+                    <td style="width: 120px;"><img src="{% static offer.product_img %}" alt="{{ offer.product_name }}" width="120px"></td>
+                    <td>{{ offer.product_name }}</td>
+                    <td>${{ offer.product_offer_cost }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Cards de productos -->
+    <div class="container my-4 justify-content-center">
+        <h2 class="text-center">Productos Destacados</h2>
+        <div class="row">
+            {% for offer in product_list %}
+            <div class="col-12 col-md-4 col-lg-3 mb-4">
+                <div class="card">
+                    <img src="{% static offer.product_img %}" alt="{{ offer.product_name }}" class="card-img-top" width="200px">
+                    <div class="card-body">
+                        <h6 title = "{{ offer.product_name }}" class="card-title text-truncate">{{ offer.product_name }}</h6>
+                        <p class="card-text">
+                            {% if offer.product_is_offer %}
+                                <del style="color: gray;"> ${{ offer.product_full_cost }} </del>
+                                <b> ${{ offer.product_offer_cost }} </b>
+                            {% else %}
+                                <b> ${{ offer.product_full_cost }} </b>
+                            {% endif %}
+                        </p>
+                        <button class="btn w-100">
+                            Comprar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
