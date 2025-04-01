@@ -21,5 +21,7 @@ from shopApp.views import index
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('shopapp/', include('shopApp.urls')),
-    path('', index)
+    path('', index),
+    path('api/', include('api.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

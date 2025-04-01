@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from shopApp.models import Product, Contacts
+from shopApp.forms import FormComment, ContactForm
 
 # Create your views here.
 def index(request):
@@ -8,10 +9,11 @@ def index(request):
     special_offers = Product.objects.filter(product_is_offer=True)
 
     my_context = {
-        'user' : 'Alan',
         'message' : '¡Lárgate!',
+        
         'special_offers' : special_offers,
         'product_list' : product_list,
+
         'special_offers_2' : [
         {
             'name' : 'Fundas de celular',
@@ -50,8 +52,30 @@ def index(request):
     #return HttpResponse("Hola mundo desde Django")
 
 def about(request):
-    active_contacts = Contacts.objects.filter(contact_active=True)  #Filtra los contactos activos
+    active_contacts = Contacts.objects.filter(contact_active=True).order_by("contact_full_name")
     context = {
-        'active_contacts': active_contacts  #Pasa los contactos activos al contexto
+        'active_contacts': active_contacts
     }
     return render(request, 'shopApp/about.html', context=context)
+
+def form_comment(request):
+    form = FormComment()
+    if request.method == 'POST':
+        form = FormComment(request.POST)
+        if form.is_valid():
+            print('FORMULARIO VALIDO')
+            print('Nombre: ', form.cleaned_data['full_name'])
+            print('Email: ', form.cleaned_data['email'])
+            print('Comentario: ', form.cleaned_data['comment'])
+
+    return render(request, 'shopApp/form_comment.html', context={'form': form})
+
+def add_contact(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('about')
+    else:
+        form = ContactForm()
+    return render(request, 'shopApp/add_contact.html', {'form': form})
